@@ -17,7 +17,7 @@ steps:
       - |
         gcloud builds repositories list \
           --region=${_REGION} \
-          --connection=${_GITHUB_CONNECTION_NAME} \
+          --connection=projects/${_PROJECT_ID}/locations/${_REGION}/connections/${_GITHUB_CONNECTION_NAME} \
           --format="json" > ./pipeline-terraform/repositories.json
 
   # Create Cloud Build Trigger
