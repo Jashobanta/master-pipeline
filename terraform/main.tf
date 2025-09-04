@@ -1,5 +1,6 @@
 locals {
-  repositories = jsondecode(file("repositories.json"))
+  repositories = repositories = length(trimspace(file("repositories.json"))) > 0 ? jsondecode(file("repositories.json")) : []
+  #repositories = jsondecode(file("repositories.json"))
   target_repo_name = "projects/${var.project_id}/locations/${var.region}/connections/${var.github_connection_name}/repositories/${var.github_repo_owner}_${var.github_repo_name}"
   repo_names = [for repo in local.repositories : repo.name]
   repo_exists = contains(local.repo_names,local.target_repo_name)
