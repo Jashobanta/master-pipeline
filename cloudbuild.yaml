@@ -3,12 +3,12 @@ logsBucket: neuroit-test # flowsource-template-bucket
 
 steps:
   # Ensure pipeline-terraform directory exists
-  - name: 'gcr.io/cloud-builders/bash'
+  - name: 'gcr.io/cloud-builders/ubuntu'
     entrypoint: 'bash'
     args:
       - '-c'
       - 'mkdir -p ./pipeline-terraform'
-      
+
   # Get existing repositories
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
