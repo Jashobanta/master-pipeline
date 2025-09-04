@@ -9,6 +9,13 @@ steps:
       - '-c'
       - 'mkdir -p ./pipeline-terraform'
 
+  # Copy Terraform files into pipeline-terraform
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'cp -r ./terraform/* ./pipeline-terraform/'
+      
   # Get existing repositories
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
