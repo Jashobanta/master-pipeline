@@ -3,7 +3,7 @@ logsBucket: neuroit-test # flowsource-template-bucket
 
 steps:
   # Ensure pipeline-terraform directory exists
-  - name: 'gcr.io/cloud-builders/ubuntu'
+  - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -19,6 +19,7 @@ steps:
           --region=${_REGION} \
           --connection=${_GITHUB_CONNECTION_NAME} \
           --format="json" > ./pipeline-terraform/repositories.json
+
   # Create Cloud Build Trigger
   - id: 'Cloud Build Trigger'
     name: 'hashicorp/terraform:light'
