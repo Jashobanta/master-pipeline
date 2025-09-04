@@ -35,9 +35,9 @@ steps:
           -var 'service_account_email=${_SERVICE_ACCOUNT_EMAIL}' 
         terraform apply -auto-approve tfplan 
 
-options:
-  workerPool:
-    projects/test-project-neuroit/locations/us-east1/workerPools/wp-neuroit-private-dev
+#options:
+  #workerPool:
+    #projects/test-project-neuroit/locations/us-east1/workerPools/wp-neuroit-private-dev
     #projects/cb1118098b-sandpeacce-gc/locations/us-east1/workerPools/wp-flowsource-private-dev
 
 timeout: '1200s'  # Set timeout to 20 minutes
