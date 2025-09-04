@@ -27,32 +27,28 @@ steps:
           --connection=projects/${_PROJECT_ID}/locations/${_REGION}/connections/${_GITHUB_CONNECTION_NAME} \
           --format="json" > ./pipeline-terraform/repositories.json
 
-  # Loop through repositories and create triggers
-  - name: 'hashicorp/terraform:light'
+  # Create Cloud Build Trigger
+  - id: 'Cloud Build Trigger'
+    name: 'hashicorp/terraform:light'
     entrypoint: 'sh'
     args:
       - '-c'
       - |
         cd ./pipeline-terraform
-        jq -c '.[]' repositories.json | while read repo; do
-          export GITHUB_REPO_OWNER=$(echo $repo | jq -r '.repository.owner')
-          export GITHUB_REPO_NAME=$(echo $repo | jq -r '.repository.name')
-          terraform init -upgrade
-          terraform fmt -check
-          terraform validate
-          terraform plan -out=tfplan -input=false \
-            -var "project_id=${_PROJECT_ID}"  \
-            -var "trigger_name=${_TRIGGER_NAME}-${GITHUB_REPO_NAME}" \
-            -var "region=${_REGION}" \
-            -var "github_connection_name=${_GITHUB_CONNECTION_NAME}"\
-                        -var "github_repo_owner=${GITHUB_REPO_OWNER}" \
-            -var "github_repo_name=${GITHUB_REPO_NAME}" \
-            -var "branch_name=^${_BRANCH_NAME}$" \
-            -var "cloudbuild_yaml_path=${_CLOUDBUILD_YAML_PATH}" \
-            -var "service_account_email=${_SERVICE_ACCOUNT_EMAIL}"
-          terraform apply -auto-approve tfplan
-        done
-
+        terraform init -upgrade
+        terraform fmt -check
+        terraform validate
+        terraform plan -out=tfplan -input=false \
+          -var 'project_id=${_PROJECT_ID}'  \
+          -var 'trigger_name=${_TRIGGER_NAME}' \
+          -var 'region=${_REGION}' \
+          -var 'github_connection_name=${_GITHUB_CONNECTION_NAME}'\
+          -var 'github_repo_owner=${_GITHUB_REPO_OWNER}' \
+          -var 'github_repo_name=${_GITHUB_REPO_NAME}' \
+          -var 'branch_name=^${_BRANCH_NAME}$' \
+          -var 'cloudbuild_yaml_path=${_CLOUDBUILD_YAML_PATH}' \
+          -var 'service_account_email=${_SERVICE_ACCOUNT_EMAIL}' 
+        terraform apply -auto-approve tfplan 
 
 #options:
   #workerPool:
@@ -65,7 +61,9 @@ substitutions:
   _PROJECT_ID: test-project-neuroit
   _REGION: us-east1
   _GITHUB_CONNECTION_NAME: Jashobanta
-  _TRIGGER_NAME: build-test-run-4
+  _TRIGGER_NAME: build-test-run-5
+  _GITHUB_REPO_OWNER: Jashobanta
+  _GITHUB_REPO_NAME: master-pipeline
   _BRANCH_NAME: main
   _CLOUDBUILD_YAML_PATH: cloudbuild.yaml
   _SERVICE_ACCOUNT_EMAIL: cloudrun@test-project-neuroit.iam.gserviceaccount.com
