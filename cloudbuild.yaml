@@ -1,0 +1,45 @@
+serviceAccount: flowsource-gke-sa@cb1118098b-sandpeacce-gc.iam.gserviceaccount.com
+logsBucket: flowsource-template-bucket
+
+steps:
+  # Get existing repositories
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud builds repositories list \
+          --region=${_REGION} \
+          --connection=${_GITHUB_CONNECTION_NAME} \
+          --format="json" > ./pipeline-terraform/repositories.json
+  # Create Cloud Build Trigger
+  - id: 'Cloud Build Trigger'
+    name: 'hashicorp/terraform:light'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        cd ./pipeline-terraform
+        terraform init -upgrade
+        terraform fmt -check
+        terraform validate
+        terraform plan -out=tfplan -input=false \
+          -var 'project_id=${_PROJECT_ID}'  \
+          -var 'trigger_name=${_TRIGGER_NAME}' \
+          -var 'region=${_REGION}' \
+          -var 'github_connection_name=${_GITHUB_CONNECTION_NAME}'\
+          -var 'github_repo_owner=${_GITHUB_REPO_OWNER}' \
+          -var 'github_repo_name=${_GITHUB_REPO_NAME}' \
+          -var 'branch_name=^${_BRANCH_NAME}$' \
+          -var 'cloudbuild_yaml_path=${_CLOUDBUILD_YAML_PATH}' \
+          -var 'service_account_email=${_SERVICE_ACCOUNT_EMAIL}' 
+        terraform apply -auto-approve tfplan 
+
+options:
+  workerPool:
+    projects/cb1118098b-sandpeacce-gc/locations/us-east1/workerPools/wp-flowsource-private-dev
+
+timeout: '1200s'  # Set timeout to 20 minutes
+
+substitutions:
+  _PROJECT_ID: cb1118098b-sandpeacce-gc

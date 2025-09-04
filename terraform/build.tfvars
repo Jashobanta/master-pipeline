@@ -1,0 +1,8 @@
+project_id             = "test-project-neuroit"
+trigger_name           = "build-test"
+region                 = "us-west1"
+github_repo_owner      = "Jashobanta"
+github_repo_name       = "Jashobanta-master-pipeline"
+branch_name            = "^main$"
+cloudbuild_yaml_path   = "cloudbuild.yaml"
+service_account_email  = "cloudrun@test-project-neuroit.iam.gserviceaccount.com"
