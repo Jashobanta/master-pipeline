@@ -1,5 +1,5 @@
-serviceAccount: flowsource-gke-sa@cb1118098b-sandpeacce-gc.iam.gserviceaccount.com
-logsBucket: flowsource-template-bucket
+serviceAccount: cloudrun@test-project-neuroit.iam.gserviceaccount.com
+logsBucket: neuroit-test # flowsource-template-bucket
 
 steps:
   # Get existing repositories
@@ -37,9 +37,10 @@ steps:
 
 options:
   workerPool:
-    projects/cb1118098b-sandpeacce-gc/locations/us-east1/workerPools/wp-flowsource-private-dev
+    projects/test-project-neuroit/locations/us-east1/workerPools/wp-neuroit-private-dev
+    #projects/cb1118098b-sandpeacce-gc/locations/us-east1/workerPools/wp-flowsource-private-dev
 
 timeout: '1200s'  # Set timeout to 20 minutes
 
 substitutions:
-  _PROJECT_ID: cb1118098b-sandpeacce-gc
+  _PROJECT_ID: test-project-neuroit
