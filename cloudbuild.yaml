@@ -68,7 +68,7 @@ substitutions:
   _PROJECT_ID: test-project-neuroit
   _REGION: us-east1
   _GITHUB_CONNECTION_NAME: Jashobanta
-  _TRIGGER_NAME: build-test-run
+  _TRIGGER_NAME: build-test-run-4
   _GITHUB_REPO_OWNER: Jashobanta
   _GITHUB_REPO_NAME: master-pipeline
   _BRANCH_NAME: .*
