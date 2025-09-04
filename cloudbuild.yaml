@@ -63,7 +63,7 @@ substitutions:
   _GITHUB_CONNECTION_NAME: Jashobanta
   _TRIGGER_NAME: build-test-run
   _GITHUB_REPO_OWNER: Jashobanta
-  _GITHUB_REPO_NAME: Jashobanta-master-pipeline
+  _GITHUB_REPO_NAME: master-pipeline
   _BRANCH_NAME: main
   _CLOUDBUILD_YAML_PATH: cloudbuild.yaml
   _SERVICE_ACCOUNT_EMAIL: cloudrun@test-project-neuroit.iam.gserviceaccount.com
