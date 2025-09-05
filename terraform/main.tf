@@ -38,17 +38,12 @@ resource "google_cloudbuild_trigger" "build_trigger" {
 
 resource "google_cloudbuild_trigger" "manual-trigger" {
   name        = "test-repo-manual-trigger"
-
-  source_to_build {
-    uri       = "https://github.com/${var.github_repo_owner}/${var.github_repo_name}.git"
-    ref       = "refs/heads/main"
-    repo_type = "GITHUB"
+  location    = var.region
+  repository_event_config {
+    repository = google_cloudbuildv2_repository.linked_repo[0].id
+    push {
+      branch = var.branch_name
+    }
   }
-
-  git_file_source {
-    path      = "cloudbuild.yaml"
-    uri       = "https://github.com/${var.github_repo_owner}/${var.github_repo_name}.git"
-    revision  = "refs/heads/main"
-    repo_type = "GITHUB"
-  }
+  filename = "cloudbuild.yaml"
 }
