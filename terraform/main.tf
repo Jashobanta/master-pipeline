@@ -35,3 +35,19 @@ resource "google_cloudbuild_trigger" "build_trigger" {
 
   service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account_email}"
 }
+
+resource "google_cloudbuild_trigger" "manual-trigger" {
+  name        = "test-repo-manual-trigger"
+
+  source_to_build {
+    uri       = "https://github.com/${var.github_repo_owner}/${var.github_repo_name}.git"
+    ref       = "refs/heads/main"
+    repo_type = "GITHUB"
+  }
+
+  git_file_source {
+    path      = "cloudbuild.yaml"
+    uri       = "https://github.com/${var.github_repo_owner}/${var.github_repo_name}.git"
+    revision  = "refs/heads/main"
+    repo_type = "GITHUB"
+  }
