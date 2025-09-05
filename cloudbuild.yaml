@@ -2,6 +2,19 @@ serviceAccount: cloudrun@test-project-neuroit.iam.gserviceaccount.com
 logsBucket: neuroit-test # flowsource-template-bucket
 
 steps:
+  # Ensure pipeline-terraform directory exists
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'mkdir -p ./pipeline-terraform'
+
+  # Copy Terraform files into pipeline-terraform
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - 'cp -r ./terraform/* ./pipeline-terraform/'
   # Get existing repositories
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
