@@ -15,6 +15,7 @@ steps:
     args:
       - '-c'
       - 'cp -r ./terraform/* ./pipeline-terraform/'
+      
   # Get existing repositories
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
@@ -47,6 +48,15 @@ steps:
           -var 'cloudbuild_yaml_path=${_CLOUDBUILD_YAML_PATH}' \
           -var 'service_account_email=${_SERVICE_ACCOUNT_EMAIL}' 
         terraform apply -auto-approve tfplan 
+        
+  # invoke newly created repo trigger
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud builds triggers run TRIGGER_ID="cbe3c18a-783b-4688-88f6-9955a71bd7f1"  --project=${_PROJECT_ID}
+   
 
 options:
   
