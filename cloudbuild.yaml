@@ -61,9 +61,9 @@ substitutions:
   _PROJECT_ID: test-project-neuroit
   _REGION: us-east1
   _GITHUB_CONNECTION_NAME: Jashobanta
-  _TRIGGER_NAME: build-test-run-1
+  _TRIGGER_NAME: test-repo-trigger
   _GITHUB_REPO_OWNER: Jashobanta
-  _GITHUB_REPO_NAME: master-pipeline
+  _GITHUB_REPO_NAME: test-repo 
   _BRANCH_NAME: main
   _CLOUDBUILD_YAML_PATH: cloudbuild.yaml
   _SERVICE_ACCOUNT_EMAIL: cloudrun@test-project-neuroit.iam.gserviceaccount.com
