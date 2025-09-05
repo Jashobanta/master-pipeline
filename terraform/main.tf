@@ -1,28 +1,33 @@
 locals {
-  repositories = jsondecode(file("${path.module}/"repositories.json"))
-  repo_map = {for repo in local.repositories : repo.name => repo }
+  #repositories = length(trimspace(file("repositories.json"))) > 0 ? jsondecode(file("repositories.json")) : []
+  repositories = jsondecode(file("repositories.json"))
+  target_repo_name = "projects/${var.project_id}/locations/${var.region}/connections/${var.github_connection_name}/repositories/${var.github_repo_owner}_${var.github_repo_name}"
+  repo_names = [for repo in local.repositories : repo.name]
+  repo_exists = contains(local.repo_names,local.target_repo_name)
 }
 
 resource "google_cloudbuildv2_repository" "linked_repo" {
-  for_each = local.repo_map
-  #count             = local.repo_exists ? 0 : 1
+  count             = local.repo_exists ? 0 : 1
   project           = var.project_id
   location          = var.region
-  name              = each.value.name
+  name              = "${var.github_repo_owner}_${var.github_repo_name}"
   parent_connection = var.github_connection_name
-  remote_uri        = each.value.remote_uri
+  remote_uri        = "https://github.com/${var.github_repo_owner}/${var.github_repo_name}.git"
 }
 
 resource "google_cloudbuild_trigger" "build_trigger" {
-  for_each = google_cloudbuildv2_repository.linked_repo
-  name        = "auto-trigger-${each.key}"
-  description = "automated trigger for ${each.key}"
+  depends_on = [
+    google_cloudbuildv2_repository.linked_repo
+  ]
+  name        = var.trigger_name
+  description = var.description
   location    = var.region
+  tags        = var.tags
   
   repository_event_config {
-    repository = each.value.id
+    repository = local.repo_exists ? local.target_repo_name : google_cloudbuildv2_repository.linked_repo[0].id
     push {
-      branch = each.value.defaultBranch
+      branch = var.branch_name
     }
   }
 
