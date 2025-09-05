@@ -51,3 +51,4 @@ resource "google_cloudbuild_trigger" "manual-trigger" {
     revision  = "refs/heads/main"
     repo_type = "GITHUB"
   }
+}
