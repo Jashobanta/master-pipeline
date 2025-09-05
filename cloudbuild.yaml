@@ -2,20 +2,6 @@ serviceAccount: cloudrun@test-project-neuroit.iam.gserviceaccount.com
 logsBucket: neuroit-test # flowsource-template-bucket
 
 steps:
-  # Ensure pipeline-terraform directory exists
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - 'mkdir -p ./pipeline-terraform'
-
-  # Copy Terraform files into pipeline-terraform
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - 'cp -r ./terraform/* ./pipeline-terraform/'
-      
   # Get existing repositories
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
@@ -24,9 +10,8 @@ steps:
       - |
         gcloud builds repositories list \
           --region=${_REGION} \
-          --connection=projects/${_PROJECT_ID}/locations/${_REGION}/connections/${_GITHUB_CONNECTION_NAME} \
+          --connection=${_GITHUB_CONNECTION_NAME} \
           --format="json" > ./pipeline-terraform/repositories.json
-
   # Create Cloud Build Trigger
   - id: 'Cloud Build Trigger'
     name: 'hashicorp/terraform:light'
@@ -50,21 +35,12 @@ steps:
           -var 'service_account_email=${_SERVICE_ACCOUNT_EMAIL}' 
         terraform apply -auto-approve tfplan 
 
-#options:
-  #workerPool:
-    #projects/test-project-neuroit/locations/us-east1/workerPools/wp-neuroit-private-dev
-    #projects/cb1118098b-sandpeacce-gc/locations/us-east1/workerPools/wp-flowsource-private-dev
+options:
+  
 
 timeout: '1200s'  # Set timeout to 20 minutes
 
 substitutions:
   _PROJECT_ID: test-project-neuroit
-  _REGION: us-east1
-  _GITHUB_CONNECTION_NAME: Jashobanta
-  _TRIGGER_NAME: test-repo-trigger
-  _GITHUB_REPO_OWNER: Jashobanta
-  _GITHUB_REPO_NAME: test-repo 
-  _BRANCH_NAME: main
-  _CLOUDBUILD_YAML_PATH: cloudbuild.yaml
-  _SERVICE_ACCOUNT_EMAIL: cloudrun@test-project-neuroit.iam.gserviceaccount.com
+
 
