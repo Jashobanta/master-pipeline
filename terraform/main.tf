@@ -46,4 +46,5 @@ resource "google_cloudbuild_trigger" "manual-trigger" {
     }
   }
   filename = "cloudbuild.yaml"
+  service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account_email}"
 }
