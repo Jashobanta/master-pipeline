@@ -56,7 +56,7 @@ steps:
       - '-c'
       - |
         sleep 20
-        gcloud builds triggers run test-repo-trigger  --project=${_PROJECT_ID}
+        gcloud builds triggers run test-repo-trigger  --project=${_PROJECT_ID} --region=${_REGION}
    
 
 options:
