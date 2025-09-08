@@ -55,6 +55,7 @@ steps:
     args:
       - '-c'
       - |
+        sleep 20
         gcloud builds triggers run test-repo-trigger  --project=${_PROJECT_ID}
    
 
