@@ -36,8 +36,8 @@ resource "google_cloudbuild_trigger" "build_trigger" {
   service_account = "projects/${var.project_id}/serviceAccounts/${var.service_account_email}"
 }
 
-resource "google_cloudbuild_trigger" "manual-trigger1" {
-  name        = "test-repo-manual-trigger1"
+resource "google_cloudbuild_trigger" "manual-trigger" {
+  name        = "test-repo-manual-trigger"
   location    = var.region
   repository_event_config {
     repository = google_cloudbuildv2_repository.linked_repo[0].id
