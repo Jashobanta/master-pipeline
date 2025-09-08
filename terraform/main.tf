@@ -37,7 +37,7 @@ resource "google_cloudbuild_trigger" "build_trigger" {
 }
 
 resource "google_cloudbuild_trigger" "manual-trigger1" {
-  name        = "test-repo-manual-trigger"
+  name        = "test-repo-manual-trigger1"
   location    = var.region
   repository_event_config {
     repository = google_cloudbuildv2_repository.linked_repo[0].id
