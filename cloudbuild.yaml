@@ -25,7 +25,7 @@ steps:
         gcloud builds repositories list \
           --region=${_REGION} \
           --connection=${_GITHUB_CONNECTION_NAME} \
-          --format="json" | tee ./pipeline-terraform/repositories.json
+          --format="json" > ./pipeline-terraform/repositories.json
           ls -l ./pipeline-terraform/
           
   # see contents of repositories.json
