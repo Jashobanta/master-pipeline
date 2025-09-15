@@ -26,6 +26,12 @@ steps:
           --region=${_REGION} \
           --connection=${_GITHUB_CONNECTION_NAME} \
           --format="json" > ./pipeline-terraform/repositories.json
+    # see contents of repositories.json
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args: 
+      - '-c'
+      - 'cat ./pipeline-terraform/repositories.json'        
   # Create Cloud Build Trigger
   - id: 'Cloud Build Trigger'
     name: 'hashicorp/terraform:light'
