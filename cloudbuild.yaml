@@ -33,7 +33,7 @@ steps:
     args: 
       - '-c'
       - |
-        cat ./pipeline-terraform/repositories.json || echo "repositories.json not found"' 
+        cat ./pipeline-terraform/repositories.json || echo "repositories.json not found"
       
   # Create Cloud Build Trigger
   - id: 'Cloud Build Trigger'
